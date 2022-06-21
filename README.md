@@ -4,3 +4,4 @@
 ## domain: 엔티티가 모여 있는 계층, 모든 계층에서 사용
 - git test ujin
 - bch branch Test
+- umm..
