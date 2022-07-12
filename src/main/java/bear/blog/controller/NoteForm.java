@@ -21,4 +21,8 @@ public class NoteForm {
     private int ctgNo;
     private int commentCount;
     private String pin;
+
+    public void mergeFileName() {
+
+    }
 }
