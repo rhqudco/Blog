@@ -9,9 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,7 +29,9 @@ public class NoteController {
         return "note/writeForm";
     }
     @PostMapping("/note/writeNote")
-    public String writeNote(@Valid NoteForm form, BindingResult result) {
+    public String writeNote(@Valid NoteForm form, BindingResult result,
+                            @RequestParam("files") List<MultipartFile> files,
+                            @RequestParam("images") List<MultipartFile> images) throws IOException {
         if(result.hasErrors()) {
             return "note/writeForm";
         }
@@ -34,8 +40,13 @@ public class NoteController {
         // 일단 임시로 작성하는 코드
         Member member = new Member();
 
+
+
+        String filesName = noteService.setFilesName(files);
+        String imagesName = noteService.setImagesName(images);
+
         Note note = new Note(member.getNickname(), form.getTitle(), form.getContent(), 0, 0,
-                LocalDateTime.now(), form.getFileName(), form.getImageName(), form.getSecret(), form.getPassword(),
+                LocalDateTime.now(), filesName, imagesName, form.getSecret(), form.getPassword(),
                 form.getCtgNo(), 0, form.getPin());
 
         noteService.writeNote(note);
