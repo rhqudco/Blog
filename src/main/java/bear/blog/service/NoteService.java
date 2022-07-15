@@ -23,11 +23,7 @@ public class NoteService {
         return note.getNo();
     }
 
-    public String setFilesName(List<MultipartFile> files) throws IOException {
-        Note note = new Note();
-        return note.fileUpload(files);
-    }
-    public String setImagesName(List<MultipartFile> files) throws IOException {
+    public String fileUpload(List<MultipartFile> files) throws IOException {
         Note note = new Note();
         return note.fileUpload(files);
     }

@@ -42,8 +42,8 @@ public class NoteController {
 
 
 
-        String filesName = noteService.setFilesName(files);
-        String imagesName = noteService.setImagesName(images);
+        String filesName = noteService.fileUpload(files);
+        String imagesName = noteService.fileUpload(images);
 
         Note note = new Note(member.getNickname(), form.getTitle(), form.getContent(), 0, 0,
                 LocalDateTime.now(), filesName, imagesName, form.getSecret(), form.getPassword(),
