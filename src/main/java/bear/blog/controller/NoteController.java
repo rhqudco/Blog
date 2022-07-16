@@ -32,6 +32,8 @@ public class NoteController {
     public String writeNote(@Valid NoteForm form, BindingResult result,
                             @RequestParam("files") List<MultipartFile> files,
                             @RequestParam("images") List<MultipartFile> images) throws IOException {
+        String filesName = "";
+        String imagesName = "";
         if(result.hasErrors()) {
             return "note/writeForm";
         }
@@ -40,10 +42,26 @@ public class NoteController {
         // 일단 임시로 작성하는 코드
         Member member = new Member();
 
+        if(!files.isEmpty()) { // files List가 비어있지 않을 때
+            filesName = noteService.fileUpload(files);
+        }
+        if(!images.isEmpty()) { // images List가 비어있지 않을 때
+            imagesName = noteService.fileUpload(images);
+        }
 
-
-        String filesName = noteService.fileUpload(files);
-        String imagesName = noteService.fileUpload(images);
+//        if(form.getTitle() == null) {
+//            // 타이틀 없을 때 예외 처리
+//        }
+//
+//        if(form.getContent() == null) {
+//            // 내용 없을 때 예외 처리
+//        }
+//        if(form.getSecret().equals("1")) {
+//            // 비밀 여부가 참인데,
+//            if(form.getPassword() == null) {
+//                // 패스워드를 설정하지 않았을 때
+//            }
+//        }
 
         Note note = new Note(member.getNickname(), form.getTitle(), form.getContent(), 0, 0,
                 LocalDateTime.now(), filesName, imagesName, form.getSecret(), form.getPassword(),
