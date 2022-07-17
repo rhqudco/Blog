@@ -56,6 +56,7 @@ public class Note {
     public String fileUpload(List<MultipartFile> files) throws IOException {
         String basePath = "/upload"; // 파일 업로드될 경로
         String originalName = "";
+        StringBuilder test = new StringBuilder();
         StringBuilder name = new StringBuilder();
         if (files.size() >= 1) {
             // 파일 업로드(여러개) 처리 부분
@@ -70,9 +71,17 @@ public class Note {
                     File dest = new File(filePath);
                     file.transferTo(dest);
                 }
-                name.append(originalName).append(" ");
+//                name.append(originalName).append(" ");
+                test.append(fileNameAppend(originalName, name));
             }
         }
+        return name.toString();
+    }
+
+    public String fileNameAppend(String originalName, StringBuilder name) {
+
+        name.append(originalName).append(" ");
+
         return name.toString();
     }
 }
