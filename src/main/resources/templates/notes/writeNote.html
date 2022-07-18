@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>글쓰기</title>
 </head>
 <body>
-
+    <form method="post" action="/note/writeNote" enctype="multipart/form-data">
+        <input type="text" placeholder="제목을 입력하세요">
+        <textarea id="ReviewArea" name="ReviewArea" rows="15"></textarea>
+        <input type="file" id="files" name="files" multiple accept="image/*">
+        <input type="file" id="images" name="images" multiple accept="image/*">
+        <input type="submit" id="writeNote" value="글 작성">
+    </form>
 </body>
 </html>
