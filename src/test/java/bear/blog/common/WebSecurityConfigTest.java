@@ -45,19 +45,19 @@ public class WebSecurityConfigTest {
     @DisplayName("패스워드 불일치 테스트")
     void notMatchTest() {
         // given
-        String rawPW = "1234";
-        String rawFakePW = "12345";
-        String encodeFakePW = webSecurityConfig.getPasswordEncoder().encode(rawFakePW);
+        String originalPW = "1234";
+        String mistakePW = "12345678";
+        String encodeFakePW = webSecurityConfig.getPasswordEncoder().encode(mistakePW);
 
         // when
-        Boolean check = webSecurityConfig.getPasswordEncoder().matches(rawPW, encodeFakePW);
+        Boolean check = webSecurityConfig.getPasswordEncoder().matches(originalPW, encodeFakePW);
 
         // then
         assertThat(check).isEqualTo(false);
 
         // print
-        System.out.println("rawPW = " + rawPW);
-        System.out.println("rawFakePW = " + rawFakePW);
+        System.out.println("originalPW = " + originalPW);
+        System.out.println("mistakePW = " + mistakePW);
         System.out.println("encodeFakePW = " + encodeFakePW);
     }
 }

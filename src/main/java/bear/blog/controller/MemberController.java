@@ -1,5 +1,6 @@
 package bear.blog.controller;
 
+import bear.blog.common.WebSecurityConfig;
 import bear.blog.domain.Member;
 import bear.blog.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,9 @@ import javax.validation.Valid;
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
+
     private final MemberServiceImpl memberService;
+    private final WebSecurityConfig passwordEncrypt;
 
     @GetMapping("/member/join")
     public String joinForm(Model model) {
@@ -26,7 +29,8 @@ public class MemberController {
         if(result.hasErrors()) {
             return "members/joinForm";
         }
-        Member member = new Member(form.getId(), form.getPassword(), form.getName(), form.getNickname(), form.getEmail(), form.getProfileImage(), form.getIntroduce());
+        String encryptPW = passwordEncrypt.getPasswordEncoder().encode(form.getPassword());
+        Member member = new Member(form.getId(), encryptPW, form.getName(), form.getNickname(), form.getEmail(), form.getProfileImage(), form.getIntroduce());
 
         memberService.join(member);
 
