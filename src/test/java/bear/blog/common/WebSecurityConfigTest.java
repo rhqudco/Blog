@@ -1,40 +1,63 @@
 package bear.blog.common;
 
-import bear.blog.service.MemberService;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.assertj.core.api.Assertions.*;
 
 public class WebSecurityConfigTest {
 
-    private MemberService memberService;
-
-    private PasswordEncoder passwordEncoder;
+    WebSecurityConfig webSecurityConfig = new WebSecurityConfig();
 
     @Test
-    @DisplayName("PW Encrypt Test")
-    public void passwordEncode() {
+    @DisplayName("패스워드 암호화 테스트")
+    void encodeTest() {
         // given
-        String normalPW = "12345";
+        String rawPW = "1234";
 
         // when
-        String encodedPassword = passwordEncoder.encode(normalPW);
+        String encodePW = webSecurityConfig.getPasswordEncoder().encode(rawPW);
 
         // then
-        assertAll(
-                () -> assertNotEquals(normalPW, encodedPassword),
-                () -> assertTrue(passwordEncoder.matches(normalPW, encodedPassword))
+        assertThat(rawPW).isNotEqualTo(encodePW);
 
-        );
-        Assertions.assertThat(normalPW).isNotEqualTo(encodedPassword);
+        // print
+        System.out.println("rawPW = " + rawPW);
+        System.out.println("encodePW = " + encodePW);
     }
 
+    @Test
+    @DisplayName("패스워드 일치 테스트")
+    void matchTest() {
+        // given
+        String rawPW = "1234";
+        String encodePW = webSecurityConfig.getPasswordEncoder().encode(rawPW);
+
+        // when
+        Boolean check = webSecurityConfig.getPasswordEncoder().matches(rawPW, encodePW);
+
+        // then
+        assertThat(check).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("패스워드 불일치 테스트")
+    void notMatchTest() {
+        // given
+        String rawPW = "1234";
+        String rawFakePW = "12345";
+        String encodeFakePW = webSecurityConfig.getPasswordEncoder().encode(rawFakePW);
+
+        // when
+        Boolean check = webSecurityConfig.getPasswordEncoder().matches(rawPW, encodeFakePW);
+
+        // then
+        assertThat(check).isEqualTo(false);
+
+        // print
+        System.out.println("rawPW = " + rawPW);
+        System.out.println("rawFakePW = " + rawFakePW);
+        System.out.println("encodeFakePW = " + encodeFakePW);
+    }
 }

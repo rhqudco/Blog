@@ -1,7 +1,7 @@
 package bear.blog.controller;
 
 import bear.blog.domain.Member;
-import bear.blog.service.MemberService;
+import bear.blog.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +13,7 @@ import javax.validation.Valid;
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
-    private final MemberService memberService;
+    private final MemberServiceImpl memberService;
 
     @GetMapping("/member/join")
     public String joinForm(Model model) {

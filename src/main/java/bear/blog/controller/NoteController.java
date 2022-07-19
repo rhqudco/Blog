@@ -2,7 +2,7 @@ package bear.blog.controller;
 
 import bear.blog.domain.Member;
 import bear.blog.domain.Note;
-import bear.blog.service.NoteService;
+import bear.blog.service.NoteServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NoteController {
 
-    private final NoteService noteService;
+    private final NoteServiceImpl noteService;
 
     @GetMapping("/note/write")
     public String writeForm(Model model) {

@@ -1,6 +1,6 @@
 package bear.blog.repository;
 
-import bear.blog.domain.TestDomain;
+import bear.blog.domain.Note;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -8,10 +8,12 @@ import javax.persistence.EntityManager;
 
 @Repository
 @RequiredArgsConstructor
-public class TestRepository {
+public class NoteRepositoryImpl implements NoteRepository{
+
     private final EntityManager em;
 
-    public void save(TestDomain domain) {
-        em.persist(domain);
+    @Override
+    public void save(Note note) {
+        em.persist(note);
     }
 }
