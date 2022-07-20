@@ -1,7 +1,7 @@
 package bear.blog.service;
 
 import bear.blog.domain.Note;
-import bear.blog.repository.NoteRepositoryImpl;
+import bear.blog.repository.NoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class NoteServiceImpl implements NoteService{
 
-    private final NoteRepositoryImpl noteRepository;
+    private final NoteRepository noteRepository;
 
     @Override
     @Transactional

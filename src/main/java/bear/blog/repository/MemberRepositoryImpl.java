@@ -1,5 +1,6 @@
 package bear.blog.repository;
 
+import bear.blog.common.WebSecurityConfig;
 import bear.blog.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,7 @@ import java.util.List;
 public class MemberRepositoryImpl implements MemberRepository{
 
     private final EntityManager em;
+    private final WebSecurityConfig webSecurityConfig;
 
     @Override
     public void save(Member member) {
@@ -35,5 +37,24 @@ public class MemberRepositoryImpl implements MemberRepository{
         return em.createQuery("Select m From Member m where m.nickname =:nickname", Member.class)
                 .setParameter("nickname", nickname)
                 .getResultList();
+    }
+
+    @Override
+    public Member login(String id, String pw) {
+
+        Member member = em.createQuery("Select m from Member m where m.id =: id", Member.class)
+                .setParameter("id", id)
+                .getSingleResult();
+
+        String password = webSecurityConfig.getPasswordEncoder().encode(pw);
+
+        boolean check = webSecurityConfig.getPasswordEncoder().matches(password, member.getPassword());
+
+        if(check) {
+            return member;
+        }
+        else {
+            return null;
+        }
     }
 }
