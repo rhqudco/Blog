@@ -46,9 +46,8 @@ public class MemberRepositoryImpl implements MemberRepository{
                 .setParameter("id", id)
                 .getSingleResult();
 
-        String password = webSecurityConfig.getPasswordEncoder().encode(pw);
 
-        boolean check = webSecurityConfig.getPasswordEncoder().matches(password, member.getPassword());
+        boolean check = webSecurityConfig.getPasswordEncoder().matches(pw, member.getPassword());
 
         if(check) {
             return member;

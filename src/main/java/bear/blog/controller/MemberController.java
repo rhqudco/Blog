@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import javax.validation.Valid;
 
 @Controller
@@ -35,5 +37,24 @@ public class MemberController {
         memberService.join(member);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/member/login")
+    public String loginForm(Model model) {
+        model.addAttribute("memberForm", new MemberForm());
+        return "members/loginForm";
+    }
+
+    @PostMapping("/member/login")
+    public String login(MemberForm form) {
+        Member member = memberService.validLogin(form.getId(), form.getPassword());
+        if(member != null) {
+            System.out.println("성공");
+            return "redirect:/";
+        }
+        else {
+            System.out.println("실패");
+            return "index";
+        }
     }
 }
