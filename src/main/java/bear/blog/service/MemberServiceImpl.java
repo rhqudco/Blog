@@ -1,5 +1,6 @@
 package bear.blog.service;
 
+import bear.blog.common.WebSecurityConfig;
 import bear.blog.domain.Member;
 import bear.blog.repository.MemberRepository;
 import bear.blog.repository.MemberRepositoryImpl;
@@ -15,6 +16,7 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
+    private final WebSecurityConfig webSecurityConfig;
 
     // 회원 가입
     @Override
@@ -33,7 +35,29 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public Member validLogin(String id, String password) {
-        return memberRepository.login(id, password);
+        validateExistentId(id);
+        List<Member> findMember = memberRepository.findById(id);
+        Member member = findMember.get(0);
+        if (validateEqualPassword(password, member.getPassword())) {
+            return member;
+        }
+        else {
+            return null;
+        }
+    }
+
+    // 비밀번호 일치 검사
+    @Override
+    public boolean validateEqualPassword(String rawPassword, String encodedPassword) {
+        return webSecurityConfig.getPasswordEncoder().matches(rawPassword, encodedPassword);
+    }
+
+    // 로그인시 아이디 존재유무 검사
+    private void validateExistentId(String id) {
+        List<Member> findMember = memberRepository.findById(id);
+        if(!findMember.isEmpty()) {
+            throw new IllegalStateException("존재하지 않는 아이디 입니다.");
+        }
     }
 
     // 아이디 중복 검사

@@ -39,4 +39,20 @@ class MemberServiceImplTest {
         // then
         Assertions.assertThat(findMember).isNotNull();
     }
+
+    @Test
+    @DisplayName("패스워드 암호화 로그인 실패")
+    public void validPasswordFailTest() {
+        // given
+        Member member = new Member();
+        member.setId("test");
+        member.setPassword(webSecurityConfig.getPasswordEncoder().encode("1234"));
+        memberService.join(member);
+
+        // when
+        Member findMember = memberService.validLogin("test", "12345");
+
+        // then
+        Assertions.assertThat(findMember).isNull();
+    }
 }
