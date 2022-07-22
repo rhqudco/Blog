@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -55,7 +58,7 @@ public class MemberServiceImpl implements MemberService{
     // 로그인시 아이디 존재유무 검사
     private void validateExistentId(String id) {
         List<Member> findMember = memberRepository.findById(id);
-        if(!findMember.isEmpty()) {
+        if(findMember.isEmpty()) {
             throw new IllegalStateException("존재하지 않는 아이디 입니다.");
         }
     }

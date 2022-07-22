@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -46,15 +48,17 @@ public class MemberController {
     }
 
     @PostMapping("/member/login")
-    public String login(MemberForm form) {
+    public String login(MemberForm form, HttpServletRequest request) {
         Member member = memberService.validLogin(form.getId(), form.getPassword());
         if(member != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("loginMember", member);
             System.out.println("성공");
             return "redirect:/";
         }
         else {
             System.out.println("실패");
-            return "index";
+            return "members/loginForm";
         }
     }
 }
