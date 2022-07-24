@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import static org.assertj.core.api.Assertions.*;
 
 
@@ -50,5 +53,24 @@ class MemberServiceImplTest {
 
         // then
         assertThat(findMember).isNull();
+    }
+
+    @Test
+    @DisplayName("로그아웃 테스트")
+    public void logoutTest(HttpServletRequest request) {
+        // given
+        Member member = new Member();
+        member.setId("test");
+        member.setPassword(webSecurityConfig.getPasswordEncoder().encode("1234"));
+        memberService.join(member);
+        HttpSession session = request.getSession();
+        session.setAttribute("loginMember", member);
+
+        // when
+        request.getSession().invalidate();
+
+        // then
+        assertThat(session).isNull();
+
     }
 }
