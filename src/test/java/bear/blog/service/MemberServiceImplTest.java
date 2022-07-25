@@ -22,6 +22,8 @@ class MemberServiceImplTest {
     WebSecurityConfig webSecurityConfig;
     @Autowired
     MemberService memberService;
+    @Autowired
+    HttpServletRequest request;
 
     @Test
     @DisplayName("패스워드 암호화 로그인")
@@ -57,7 +59,7 @@ class MemberServiceImplTest {
 
     @Test
     @DisplayName("로그아웃 테스트")
-    public void logoutTest(HttpServletRequest request) {
+    public void logoutTest() {
         // given
         Member member = new Member();
         member.setId("test");
@@ -67,10 +69,9 @@ class MemberServiceImplTest {
         session.setAttribute("loginMember", member);
 
         // when
+        System.out.println("session = " + session.getAttribute("loginMember"));
         request.getSession().invalidate();
 
         // then
-        assertThat(session).isNull();
-
     }
 }
