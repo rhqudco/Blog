@@ -1,6 +1,5 @@
 package bear.blog.repository;
 
-import bear.blog.common.WebSecurityConfig;
 import bear.blog.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
