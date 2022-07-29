@@ -15,7 +15,13 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     @Override
     public void save(Member member) {
-        em.persist(member);
+        if(member.getNo() == null) {
+            em.persist(member);
+            // no 값이 없기 때문에 (신규 등록이기 때문에) 신규 등록 역할
+        } else {
+            em.merge(member);
+            // no 값이 있기 때문에 (중복 등록이기 때문에) 업데이트 역할
+        }
     }
 
     @Override
